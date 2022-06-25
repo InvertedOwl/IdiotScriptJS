@@ -365,7 +365,7 @@ export default class allBlocks {
         }, "draw", new Point(290, 50), "Clear", []),
 
         new Block.Block((block, ctx, speed) => {
-            allBlocks.windctx.fillStyle = VariableManager.getVar(block.arguments[0]).toString()
+            allBlocks.windctx.fillStyle = block.arguments[0]
         }, "draw", new Point(290, 50), "Set Color", [true]),
 
         new Block.Block((block, ctx, speed) => {
