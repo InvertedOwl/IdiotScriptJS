@@ -1,0 +1,420 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/isjsdocs/index.css">
+    <title>IS JS Documentation</title>
+</head>
+<body>
+    
+    <div id="nav">
+        <a href="/docs#gettingStarted" class="navItem">Getting Started<hr class="navBar"></a>
+        <a href="/docs#boardSystem" class="navItem">Boards </a>
+        <a href="/docs#blockSystem" class="navItem">Blocks </a>
+        <a href="/docs#variableSystem" class="navItem">Variables </a>
+        <a href="/docs#triggerSystem" class="navItem">Triggers <hr class="navBar"></a>
+        <a href="/docs#eventBlocks" class="navItem">Event Blocks</a>
+        <a href="/docs#variableBlocks" class="navItem">Variable Blocks</a>
+        <a href="/docs#methodBlocks" class="navItem">Method Blocks</a>
+        <a href="/docs#triggerBlocks" class="navItem">Trigger Blocks</a>
+        <a href="/docs#drawBlocks" class="navItem">Draw Blocks<hr class="navBar"></a>
+
+    </div>
+
+    <div id="mainBody">
+        <h1><u>Idiot Script Documentation</u></h1>
+        <h4>verion 6.2022.2a</h3>
+
+        <h2 id="gettingStarted">Getting Started</h2>
+        <p>Welcome to Idiot Script! Idiot Script is a simple block based programming language built in under a week. This Documentation is meant to provide explanation and walk throughs to the workings of this langauge and you can find a navigation bar to the left of this page.</p>
+        <p>First navigate to <a href="http://brohouse.dev/idiotscript">http://brohouse.dev/idiotscript</a>. Once you have navigated to IdiotScript you will find three sections: <b>The main board (center), the console output (right), and the block list (top).</b> These sections will be explained as you continue</p>
+        <p>Press space to start the board (Start all of the starts <a href="/docs#eventBlocks">start blocks</a>)</p>
+        <hr>
+
+        <h2 id="boardSystem">Boards</h2>
+        <p>Boards are the workspaces in which you place your <a href="/docs#blockSystem">blocks</a> and <a href="/docs#blockSystem">block blocks</a>. When you right click the board a context menu will appear with a few different options</p>
+        <br>
+        <img src="/isjsdocs/boardContextMenu.png" height="120px"></img>
+        <ul>
+            <li><b>Clear Board</b> <p>
+                This will remove all blocks and block blocks from the board <i>without saving</i>
+            </p> </li>
+
+            <li><b>Save Board</b> <p>
+                This option downloads the current board as a <i>.is</i> file called <i>example_board.is</i>
+            </p> </li>
+
+            <li><b>Load Board</b> <p>
+                Opens a file choose dialog where you can pick <i>.is</i> files to load into your board. <i>This does not remove the current board</i>
+            </p> </li>
+
+            <li><b>Set Board Speed</b> <p>
+                Sets the wait time between block calls in milliseconds. If you set the board speed to 1000 is will wait 1 second between every block. If speed is less than 1 it will activate <a href="/docs#efficiency_mode">Efficiency Mode</a></i>
+            </p></li>
+        </ul>
+        <div id="efficiency_mode">
+            <br><br>
+            <h4>Efficiency Mode</h4>
+            <p>
+                Efficiency Mode is activated whenever you set the board speed to anything less than 1. This mode will essentially pour almost all resources into running the program rather than rendering and updating the blocks. This mode is useful for making real time programs such as game or simulations.
+                <br><br>
+                If you are using an infinite loop with Efficiency Mode such as a render loop you <b>must</b> use wait blocks in between loops. If you dont the page will loop forever and freeze.
+            </p>
+        </div>
+
+        <h2 id="blockSystem">Blocks</h2>
+        <p>Every action event or otherwise is a block. Blocks contain arguments but never return anything. Blocks can only adjust current variables or create new variables.</p>
+        <p>A collection or line of blocks is called a block block. Add blocks to a block block by dragging a block to the end of the block block. Move the block block by clicking and dragging the first block of a block block. If you click on a block in the middle of the block block it will split the block block in two. The first block is regarded as the start of the block block</p>
+        <img src="/isjsdocs/blockblock1.png" height="120px">
+        <img src="/isjsdocs/blockblock2.png" height="120px">
+        <p>When right clicking a block block (the first block of a line of blocks) it will open a context menu for some things you can do with the block block</p>
+        <img src="/isjsdocs/contextmenu2.png" height="100px">
+        <ul>
+            <li><b>New Block Block</b>  -wip-</li>
+            <li><b>Delete Block Block</b>  Removes entire block block and all its block components</li>
+            <li><b>Clone Block Block</b>  Copies entire block block to below</i></li>
+        </ul>
+        <p>When right clicking a block (any block that isnt the first in a block block) it will open a context menu for some things you can do with the block</p>
+        <img src="/isjsdocs/contextmenu3.png" height="100px">
+        <ul>
+            <li><b>Set Variable Name</b> Opens a menu where you can edit the parameters of a block. What a block does with these parameters depends on what it does. For instance for a create var block the first input would be the variable name and the second input would be the value</li>
+            <li><b>Delete Block</b> Removes block and rest of the blocks in the line are shifted down</li>
+            <li><b>Clone Block</b> Copies block to below the block</i></li>
+        </ul>
+
+        <h2 id="variableSystem">Variables</h2>
+        <h4>Variables</h4>
+        <p>Variables, like most languages, are named values that can be changed by blocks. For instance if you put a create variable block, set the variable name to "Test" and the value to 0, then have a set rand block set to "Test", the value of "Test" will now be a random value. If you then print out this variable with the print var block with variable name set to "Test" it will now print out the contents of "Test".   <br>      <img src="/isjsdocs/blockblock3.png" height="120px">
+        <h4>Trigger name</h4>
+        <p>Trigger names differ from variables in the fact that they dont store anything. They are simply a marker for trigger/jump blocks to be linked up. You can have both a variable and trigger name without conflict    <br>      <img src="/isjsdocs/blockblock4.png" height="150px"></p>
+        </p>
+
+        <h2 id="triggerSystem">Triggers</h2>
+
+            <hr>
+        <h2 id="eventBlocks">Event Blocks</h2>
+        <p>
+            <ul>
+                <li><h3>Start</h3> 
+                    <p>The start block starts running the block block from the point in which the block is at. If the block is the beginning it will run the entire block block. Press <i>space</i> to run start blocks</p>
+                    <ul class="arguments">
+                        <li>No arguments</li>
+                    </ul>
+                </li>
+                <li><h3>On Draw Button</h3> 
+                    <p>This event will trigger when the user presses a key on the draw window. It sets the variable e to the key code.</p>
+                    <ul class="arguments">
+                        <li>No arguments</li>
+                    </ul>
+                </li>
+                <li><h3>On Draw Mouse</h3> 
+                    <p>This event will trigger when the user click the draw window. It creates variables mouseX and mouseY and sets their values. It also sets the variable e to the mouse button (0, 1, 2)</p>
+                    <ul class="arguments">
+                        <li>No arguments</li>
+                    </ul>
+                </li>
+            </ul>
+        </p>
+
+        <h2 id="variableBlocks">Variable Blocks</h2>
+        <p>
+            <ul>
+                <li><h3>Create Var</h3> 
+                    <p>Creates a new variable with the provided primitive as the value. </p>
+                    <ul class="arguments">
+                        <li>New variable name</li>
+                        <li>Primitive value to store</li>
+                    </ul>
+                </li>
+                <li><h3>Clone Var</h3> 
+                    <p>Clones the value of the variable provided and stores it in a new variable with the name provided. If the new variable provided already exists it will overwrite the value inside.</p>
+                    <ul class="arguments">
+                        <li>New variable name</li>
+                        <li>Variable to clone</li>
+                    </ul>
+                </li>
+                <li><h3>Input Var</h3> 
+                    <p>Halts everything and waits for input in the console. Once console input is recieved the program will continue. It will create (or overwrite) the variable and store the value input in the console into the variable</p>
+                    <ul class="arguments">
+                        <li>New variable name</li>
+                    </ul>
+                </li>
+                <li><h3>Set Rand</h3> 
+                    <p>Creates (or overwrites) a variable with </p>
+                    <ul class="arguments">
+                        <li>New variable name</li>
+                    </ul>
+                </li>
+                <li><h3>Print Var</h3> 
+                    <p>Prints the value of the variable to console</p>
+                    <ul class="arguments">
+                        <li>Variable to print</li>
+                    </ul>
+                </li>
+                <li><h3>Create Array</h3> 
+                    <p>Creates an array with the given name provided</p>
+                    <ul class="arguments">
+                        <li>New array name</li>
+                    </ul>
+                </li>
+                <li><h3>Array Push</h3> 
+                    <p>Appends the given variable to array</p>
+                    <ul class="arguments">
+                        <li>Array name</li>
+                        <li>Variable to append</li>
+                    </ul>
+                </li>
+                <li><h3>Set Index Of</h3> 
+                    <p>Sets a specific index of array to given variable. It must be a valid index for it to work. For it to be a valid index it must be 1 less than the length and greater than 0.</p>
+                    <ul class="arguments">
+                        <li>Array name</li>
+                        <li>Variable storing the index</li>
+                        <li>Variable to set</li>
+                    </ul>
+                </li>
+                <li><h3>Get Index Of</h3> 
+                    <p>Creates (or overwrites) a variable and sets the value to the value at array index provided.</p>
+                    <ul class="arguments">
+                        <li>Array name</li>
+                        <li>Variable storing the index</li>
+                        <li>Variable to create/overwrite</li>
+                    </ul>
+                </li>
+                <li><h3>Remove Index</h3> 
+                    <p>Removes value at index from list.</p>
+                    <ul class="arguments">
+                        <li>Array name</li>
+                        <li>Variable storing the index</li>
+                    </ul>
+                </li>
+                <li><h3>Length Of Array</h3> 
+                    <p>Creates (or overwrites) a variable and sets the value to the length of the array provided</p>
+                    <ul class="arguments">
+                        <li>Array name</li>
+                        <li>Variable to create/overwrite</li>
+                    </ul>
+                </li>
+                <li><h3>Print Primitive</h3> 
+                    <p>Print but with no variables. Anything you put in the arguments will be printed to the console.</p>
+                    <ul class="arguments">
+                        <li>The thing you want to print</li>
+                    </ul>
+                </li>
+            </ul>
+        </p>
+    
+        <h2 id="methodBlocks">Method Blocks</h2>
+        <p>
+            <ul>
+                <li><h3>Add Vars</h3> 
+                    <p>Sets the first variable to the two variables added together. Similar to the += operator in other languages</p>
+                    <ul class="arguments">
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+                    </ul>
+                </li>
+                <li><h3>Multiply Vars</h3> 
+                    <p>Sets the first variable to the two variables multiplied together. Similar to the *= operator in other languages</p>
+                    <ul class="arguments">
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+                    </ul>
+                </li>
+                <li><h3>Divide Vars</h3> 
+                    <p>Sets the first variable to the two variables divided. Similar to the /= operator in other languages</p>
+                    <ul class="arguments">
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+                    </ul>
+                </li>
+                <li><h3>Subtract Vars</h3> 
+                    <p>Sets the first variable to the first subtracted to the second. Similar to the -= operator in other languages</p>
+                    <ul class="arguments">
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+                    </ul>
+                </li>
+                <li><h3>Floor Float</h3> 
+                    <p>Sets the variable to itself floored. Aka (0.5) would become (0)</p>
+                    <ul class="arguments">
+                        <li>Variable to floor</li>
+                    </ul>
+                </li>
+                <li><h3>Sin / Cos / Tan</h3> 
+                    <p>Sets the variable to itself through the trig function used.</p>
+                    <ul class="arguments">
+                        <li>Variable</li>
+                    </ul>
+                </li>
+                <li><h3>Mod vars</h3> 
+                    <p>Sets the first variable to the first variable mod the second. Similar to the %= operator in other languages</p>
+                    <ul class="arguments">
+                        <li>Variable to be modded</li>
+                        <li>Variable that will be the modulo</li>
+                    </ul>
+                </li>
+                <li><h3>Concatinate Vars</h3> 
+                    <p>Sets the first varible to the two variables added together as strings. Can be used to build messages for debugging or messages in console.</p>
+                    <ul class="arguments">
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+                    </ul>
+                </li>
+                <li><h3>Wait</h3> 
+                    <p>Waits the amount of time the variable states in milliseconds.</p>
+                    <ul class="arguments">
+                        <li>Variable contianing the time to wait in mil</li>
+                    </ul>
+                </li>
+            </ul>
+        </p>
+    
+        <h2 id="triggerBlocks">Trigger Blocks</h2>
+        <p>
+            <ul>
+                <li><h3>Trigger</h3> 
+                    <p>A marker for where jump blocks will jump to. If executed normally in line it will be skipped and not trigger since it does actually execute anything.</p>
+                    <ul class="arguments">
+                        <li>Name of trigger (Not a variable)</li>
+                    </ul>
+                </li>
+                <li><h3>Jump</h3> 
+                    <p>Halts current block block and jumps to the trigger with the same name as the argument provided here. You will need a "continue" trigger block for a jump to have the argument "continue"</p>
+                    <ul class="arguments">
+                        <li>Name of trigger to jump to (Not a variable)</li>
+                    </ul>
+                </li>
+                <li><h3>Jump To Var</h3> 
+                    <p>Does the same as Jump but instead uses a variable contianing the destination to jump to rather than a primitive. This is good for functions and dynamic returns. there are no return from subroutine equivalents so you will have to manage your own stack and use this block to jump back using your own stack. You can use an array to store a list of trigger names (pushed before jumping) and go back through to return.</p>
+                    <ul class="arguments">
+                        <li>Variable containing the trigger name.</li>
+                    </ul>
+                </li>
+                <li><h3>Jump If =</h3> 
+                    <p>Does the same as Jump but only if the condition is met. Variable 1 must equal variable 2 for the jump to execute.</p>
+                    <ul class="arguments">
+                        <li>Name of trigger to jump to (Not a variable)</li>
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+                        
+                    </ul>
+                </li>
+                <li><h3>Jump If !=</h3> 
+                    <p>Does the same as Jump but only if the condition is met. Variable 1 must not equal variable 2 for the jump to execute.</p>
+                    <ul class="arguments">
+                        <li>Name of trigger to jump to (Not a variable)</li>
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+                        
+                    </ul>
+                </li>
+
+                <li><h3>Jump If ></h3> 
+                    <p>Does the same as Jump but only if the condition is met. Variable 1 must be greater (exclusive) than variable 2 for the jump to execute.</p>
+                    <ul class="arguments">
+                        <li>Name of trigger to jump to (Not a variable)</li>
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+
+                    </ul>
+                </li>
+                <li><h3>Jump If <</h3> 
+                    <p>Does the same as Jump but only if the condition is met. Variable 1 must be less (exclusive) than variable 2 for the jump to execute.</p>
+                    <ul class="arguments">
+                        <li>Name of trigger to jump to (Not a variable)</li>
+                        <li>Variable 1</li>
+                        <li>Variable 2</li>
+
+                    </ul>
+                </li>
+                
+            </ul>
+        </p>
+        <h2 id="drawBlocks">Draw Blocks</h2>
+        <p>
+            <b>&lt;Note&gt;</b> If doing an infinite loop with drawing you <b>must</b> use a wait block.
+        </p>
+        <p>
+            <ul>
+                <li><h3>Draw Window</h3> 
+                    <p>Creates a window for the rest of the draw blocks to use.</p>
+                    <ul class="arguments">
+                        <li>No arguments</li>
+                        
+                    </ul>
+                </li>
+                <li><h3>Draw Var</h3> 
+                    <p>Draws the value in the variable as a string on the draw window at the position of the two other variables provided</p>
+                    <ul class="arguments">
+                        <li>Variable to print</li>
+                        <li>Variable of position x</li>
+                        <li>Variable of position y</li>
+                    </ul>
+                </li>
+                <li><h3>Draw Square</h3> 
+                    <p>Draws a square with the first two variables being the position and the third being the size</p>
+                    <ul class="arguments">
+                        <li>Variable of position x</li>
+                        <li>Variable of position y</li>
+                        <li>Variable of position size</li>
+                    </ul>
+                </li>
+                <li><h3>Draw Rect</h3> 
+                    <p>Draws a rectangle with the first two variables being the position and the third and fourth being the length and width</p>
+                    <ul class="arguments">
+                        <li>Variable of position x</li>
+                        <li>Variable of position y</li>
+                        <li>Variable of position length</li>
+                        <li>Variable of position width</li>
+                    </ul>
+                </li>
+                <li><h3>Clear</h3> 
+                    <p>Clears the screen. Keep in mind this sets the color to white.</p>
+                    <ul class="arguments">
+                        <li>No arguments</li>
+                    </ul>
+                </li>
+                <li><h3>Set Color</h3> 
+                    <p>Sets the pen color to a css color ex. <i>rgb(50, 50, 50)</i> or <i>red</i> etc</p>
+                    <ul class="arguments">
+                        <li>Variable containing the color</li>
+                    </ul>
+                </li>
+                <li><h3>Start Poly</h3> 
+                    <p>Starts the poly path. This block MUST have an end poly block somewhere downstream.</p>
+                    <ul class="arguments">
+                        <li>No arguments</li>
+                    </ul>
+                </li>
+                <li><h3>Set Point</h3> 
+                    <p>Adds a point to the poly with the first variable being the x and the second variable being the y</p>
+                    <ul class="arguments">
+                        <li>Variable containing the x</li>
+                        <li>Variable containing the y</li>
+                    </ul>
+                </li>
+                <li><h3>End Poly</h3> 
+                    <p>Ends the poly path. This finished the path and draws the finished poly to the screen.</p>
+                    <ul class="arguments">
+                        <li>No Arguments</li>
+                    </ul>
+                </li>
+            </ul>
+        </p>
+    </div>
+</body>
+<!-- Smooth Scroll -->
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+</html>

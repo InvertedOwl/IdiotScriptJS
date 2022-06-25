@@ -1,0 +1,19 @@
+{
+  "name": "idiotscript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "crypto": "^1.0.1",
+    "express": "^4.18.1",
+    "express-rate-limit": "^6.4.0",
+    "node-fetch": "^2.6.7"
+  }
+}
