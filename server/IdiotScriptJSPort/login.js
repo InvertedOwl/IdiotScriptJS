@@ -19,6 +19,22 @@ function onSignUp() {
 }
 
 function onSignIn() {
+    if (document.getElementById("signinbutton").innerText == "Logout") {
+        const signUpEvent = new CustomEvent('onSignUp', {
+            detail: {
+                "username" : "Account",
+                "password" : "",
+                "authtoken" : undefined      
+            }
+    
+        });
+        document.cookie = "auth=;"
+        document.body.dispatchEvent(signUpEvent)
+        document.getElementById("signinbutton").innerText = "Sign in"
+        document.getElementById("signupin").style.display = "none"
+        document.getElementById("overlay").style.display = "none"
+        return;
+    }
     login.username = document.getElementById("signin_username").value;
     login.password = document.getElementById("signin_password").value;
     fetch("/api/auth", {  
@@ -37,6 +53,9 @@ function onSignIn() {
                     }
             
                 });
+                if (document.getElementById("rememberM").checked) {
+                    document.cookie = "auth" + "=" + data.authtoken + ";";
+                }
                 document.body.dispatchEvent(signUpEvent)
             }) 
         }

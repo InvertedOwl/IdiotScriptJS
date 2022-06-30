@@ -182,6 +182,14 @@ app.post('/api/auth', async (req, res) => {
     const data = await response.text();
     res.status(response.status).send(data);
 })
+app.post('/api/user', async (req, res) => {
+    const response = await fetch(apiDest + "/api/user", {
+        method: "POST",
+        body: req.body
+    })
+    const data = await response.text();
+    res.status(response.status).send(data); 
+})
 
 app.delete('/api/board', async (req, res) => {
     if (authenticateUser(req.headers.authentication)) {

@@ -29,6 +29,7 @@ export default function arrayToBlockList (str) {
                 if (lines[i].split(" | ")[0] == exBlock.name) {
                     block = cloneBlock(exBlock);
                     let args = lines[i].split(" | ")[1];
+                    args = decodeURIComponent(args);
                     block.arguments = args.substring(1, args.length - 1).split(",");
                     if (i == 1) {
                         block.position = new Point(x, y);

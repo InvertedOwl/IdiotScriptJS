@@ -51,6 +51,9 @@ export default class allBlocks {
             
             VariableManager.setVar(block.arguments[0], Math.random());
         }, "var", new Point(210, 50), "Set Rand", [true]),
+        new Block.Block((block, ctx, speed) => {
+            VariableManager.setVar(block.arguments[0], new Date().getTime());
+        }, "var", new Point(210, 50), "Set Now", [true]),
         new Block.Block((block, ctx, speed) => { 
             if (Array.isArray(VariableManager.getVar(block.arguments[0])) || typeof VariableManager.getVar(block.arguments[0]) == 'object') {
                 ConsoleManager.addToConsole(JSON.stringify(VariableManager.getVar(block.arguments[0])).replaceAll('"', "").replaceAll(",", ", ") + "", ctx); 
@@ -137,7 +140,7 @@ export default class allBlocks {
         }, "operation", new Point(290, 50), "Tan", [false]),
         new Block.Block((block, ctx, speed) => {
             VariableManager.setVar(block.arguments[0], parseFloat(VariableManager.getVar(block.arguments[1])) % parseFloat(VariableManager.getVar(block.arguments[2])));
-        }, "operation", new Point(290, 50), "Mod Vars", [false, false, false]),
+        }, "operation", new Point(290, 50), "Mod Vars", [true, false, false]),
         new Block.Block((block, ctx, speed) => {
             VariableManager.setVar(block.arguments[0], VariableManager.getVar(block.arguments[0]) + VariableManager.getVar(block.arguments[1]));
         }, "operation", new Point(290, 50), "Concatinate Vars", [false, false]),
@@ -302,8 +305,8 @@ export default class allBlocks {
             }
         }, "trigger", new Point(290, 50), "Jump If <", [true, false, false]),
         new Block.Block((block, ctx, speed) => {
-            let wind = window.open("", "littleWindow", "location=center,resizable=no,width=418,height=418");
-            wind.document.write("<link href='https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap' rel='stylesheet'><canvas id='windcanvas' width='400' height='400'><title>IS JS Draw Window</title>")
+            let wind = window.open("", "littleWindow", "location=center,resizable=no,width=390,height=369");
+            wind.document.write("<style>body { margin: 0; }</style><link href='https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap' rel='stylesheet'><canvas id='windcanvas' width='400' height='400' style='margin: 0;'><title>IS JS Draw Window</title>")
             var canvas = wind.document.getElementById('windcanvas');
 
             wind.addEventListener("keydown", (e) => {
@@ -343,7 +346,6 @@ export default class allBlocks {
         }, "draw", new Point(290, 50), "Draw     Window", 0),
         new Block.Block((block, ctx, speed) => {
             
-            allBlocks.windctx.fillStyle = 'rgb(25, 25 ,25)'
             allBlocks.windctx.fillText(VariableManager.getVar(block.arguments[0]).toString(), parseFloat(VariableManager.getVar(block.arguments[1])), parseFloat(VariableManager.getVar(block.arguments[2])))
 
 

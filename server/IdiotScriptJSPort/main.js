@@ -75,6 +75,20 @@ document.addEventListener("contextmenu", (e) => {
   e.preventDefault();
 })
 
+if (getCookie("auth") != "") {
+  fetch("api/user", { method: "POST", body: JSON.stringify({"authtoken" : getCookie("auth")})}).then((res) => {
+    res.json().then((text) => {
+      const signUpEvent = new CustomEvent('onSignUp', {
+        detail: {
+            "username" : text.username,
+            "password" : "",
+            "authtoken" : getCookie("auth")      
+        }
+      });
+      document.body.dispatchEvent(signUpEvent)
+    })
+  })
+}
 
 if (window.location.href.includes("?")) {
   let url = window.location.href;
@@ -340,6 +354,9 @@ function setup() {
         mouseHeld = true;
         enableStopSave();
         //("TEST")
+        if (block.name == "On Draw Button" || block.name  == "On Draw Mouse"){
+          variableinit();
+        }
 
       }, "TEST"))
       xOffset += 90;
@@ -354,6 +371,7 @@ function setup() {
       if (document.activeElement.type == "text") return;
 
       if (e.code == "Space") {
+        BlockBlock.BlockBlock.callsWithoutWait = 0
         runBoard(ctx);
       }
       if (e.ctrlKey){
@@ -550,6 +568,7 @@ function setup() {
 
                   orderBlocks();
                   clearContext();
+                  variableinit();
 
                 }, deleteName);
                 buttonList.push(button3);
@@ -597,6 +616,7 @@ function setup() {
 
               clearContext();
               draw();
+              variableinit();
             }, deleteName);
             buttonList.push(button2);
     
@@ -1383,6 +1403,10 @@ function variableinit() {
           if (!variableListWithoutRun.includes(blockiter.arguments[0]))
           variableListWithoutRun.push(blockiter.arguments[0])
           break;
+        case "Set Now": 
+          if (!variableListWithoutRun.includes(blockiter.arguments[0]))
+          variableListWithoutRun.push(blockiter.arguments[0])
+          break;
         case "Input Var": 
           if (!variableListWithoutRun.includes(blockiter.arguments[0]))
           variableListWithoutRun.push(blockiter.arguments[0])
@@ -1399,12 +1423,28 @@ function variableinit() {
           if (!variableListWithoutRun.includes(blockiter.arguments[1]))
           variableListWithoutRun.push(blockiter.arguments[1])
           break;
+        case "On Draw Mouse": 
+          if (!variableListWithoutRun.includes("e") && !variableListWithoutRun.includes("mouseX") && !variableListWithoutRun.includes("mouseY"))
+          variableListWithoutRun.push("e")
+          variableListWithoutRun.push("mouseX")
+          variableListWithoutRun.push("mouseY")
+          console.log(variableListWithoutRun)
+          break;
+        case "On Draw Button": 
+          if (!variableListWithoutRun.includes("e"))
+          variableListWithoutRun.push("e")
+          break;
+        case "Mod Vars": 
+          if (!variableListWithoutRun.includes(blockiter.arguments[0]))
+          variableListWithoutRun.push(blockiter.arguments[0])
+          break;
       }
     }
   }
 }
 
 document.body.addEventListener("onSignUp", (e) => {
+  document.getElementById("signinbutton").innerText = "Logout"
   cred = e.detail;
 }, false)
 
@@ -1441,3 +1481,19 @@ document.getElementById("varInput").addEventListener('change', function() {
   }
   fileReader.readAsText(this.files[0]);
 })
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
