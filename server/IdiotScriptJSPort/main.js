@@ -148,7 +148,7 @@ function setup() {
         //(convertToArray(blockBlockList))
         download(name.replaceAll(" ", "_") + ".is", convertToArray(blockBlockList))
         disableStopSave()
-      }, "Save Board"))
+      }, "Download Board"))
       buttonList.push(new Button(new Point(5, 60 + 40), 190, 50, () => {
         blockBlockList.splice(0, blockBlockList.length)
         document.getElementById("varInput").click();
@@ -596,10 +596,18 @@ function setup() {
             contextHeight = 155 + offset;
 
 
-
+            let downloadName = (selectedBlockBlocks.length > 0) ? "Download Selection" : "Download Block Block"
 
             let button = new Button(new Point(e.clientX + 5, e.clientY + 5 + offset), 190, 45, () => {
-            }, "New Block Block");
+              if (selectedBlockBlocks.length > 0) {
+                download(blockBlock.blockList[0].name.toLowerCase().replaceAll(" ", "_") + ".is", convertToArray(selectedBlockBlocks))
+                disableStopSave()
+              } else {
+                download(blockBlock.blockList[0].name.toLowerCase().replaceAll(" ", "_") + ".is", convertToArray([blockBlock]))
+                disableStopSave()
+              }
+
+            }, downloadName);
             buttonList.push(button);
 
             let deleteName = (selectedBlockBlocks.length > 0) ? "Delete Selection" : "Delete Block Block"
@@ -678,7 +686,7 @@ function setup() {
             //(convertToArray(blockBlockList))
             download(name.replaceAll(" ", "_") + ".is", convertToArray(blockBlockList))
             disableStopSave()
-          }, "Save Board");
+          }, "Download Board");
           buttonList.push(button);
           button = new Button(new Point(e.clientX + 5, e.clientY + 105), 190, 45, () => {
             document.getElementById("varInput").click();
