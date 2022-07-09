@@ -71,39 +71,61 @@
     <title>IS JS</title>
 </head>
 <body style="margin: 0;">
+    <div id="mods-cont"></div>
+
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
     <button id="overlay"></button>
         <div class="window" id="signupin" style="display: none;">
-
-            <p id="signintext">SIGN IN</p>
-            <div>
-                <input type="text" autocomplete="off" name="" id="signin_username" placeholder="Username" class="input">
+            <div id="signin" class="window_content">
+                <p id="signintext">SIGN IN</p>
+                <div>
+                    <input type="text" autocomplete="off" name="" id="signin_username" placeholder="Username" class="input">
+                </div>
+                <div>
+                    <input type="password" name="" id="signin_password" placeholder="Password" class="input">
+                </div>
+                <label id="silabel" style="display: none;">
+                    <input type="checkbox" name="" id="remember">
+                    <label for="remember">Remember your login?</label>
+                    <span id="basesi"></span>
+                    <span id="notbasesi"></span>
+                </label>
+                <input type="checkbox" name="" id="rememberM" style="position: absolute; right: 300px; bottom: 90px">
+                <label for="rememberM" style="position: absolute; right: 120px; bottom: 86px; font-size: 19; text-align: left; color: white;">Keep me logged in</label>
+                <button  onclick="onSignIn()" id="signinbutton" style="transform: translate(-60px, -15px);">Sign In</button>
+                <div id="vl"></div>
+                <p id="signuptext">Dont have an account?</p>
+                <a href="javascript:forgotMyPassword();" style="font-size: 15px; position: absolute; right: 128px; bottom: 5px;">Forgot my password</a>
+    
+                <button id="signinbutton" style="left: 200px; bottom: 125px" onclick="onSignUp()">Sign Up</button>
+                <div id="errorbg">        <p id="error">Example Error Message
+                </p></div>
             </div>
-            <div>
-                <input type="password" name="" id="signin_password" placeholder="Password" class="input">
-            </div>
-            <label id="silabel" style="display: none;">
-                <input type="checkbox" name="" id="remember">
-                <label for="remember">Remember your login?</label>
-                <span id="basesi"></span>
-                <span id="notbasesi"></span>
-            </label>
-            <input type="checkbox" name="" id="rememberM" style="position: absolute; right: 300px; bottom: 90px">
-            <label for="rememberM" style="position: absolute; right: 120px; bottom: 86px; font-size: 19; text-align: left; color: white;">Keep me logged in</label>
-            <button  onclick="onSignIn()" id="signinbutton" style="transform: translate(-60px, -15px);">Sign In</button>
-            <div id="vl"></div>
-            <p id="signuptext">Dont have an account?</p>
-            <a href="https://brohouse.dev/resetpassword" target="_blank" style="font-size: 15px; position: absolute; right: 128px; bottom: 5px;">Forgot my password</a>
 
-            <button id="signinbutton" style="left: 200px; bottom: 125px" onclick="onSignUp()">Sign Up</button>
-            <div id="errorbg">        <p id="error">Example Error Message
-            </p></div>
+            <div id="forgotpass" style="display: none;" class="window_content">
+                <p style="color: white; position: relative; left: 45px; font-size: 30;">Forgot your password?</p>
+                <p style="color: white; position: relative; left: 45px; bottom: -15px; font-size: 19;">Email</p>
+                <input type="email" class="input" style="position: relative; left: 45px; width:  calc(100% - 90px); height: 40px; font-size: 20px; " id="emailreset">
+                <button id="signinbutton" style="width: 280px; position:absolute; left: 200px;" onclick="sendEmail()">Send password reset</button>
+            </div>
+            
+
+
     
 
         </div>
         <div class="window" style="display: none; width: 600px;" id="shared">
             <div style="position: relative; width: 500; left: 50px; height: 400px; overflow-y:scroll;" id="boardcontainer">
             </div>
+        </div>
+        <div class="window" style="display: none; width: 600px;" id="modlist">
+            <div id="modcontainer" style="height: 400px; overflow-y: scroll; width: 560px">
+                <div id="mods" style="margin-left: 30px; margin-top: 20px;">
+
+                </div>
+            </div>
+
         </div>
 
 
@@ -128,5 +150,7 @@
 </body>
 <script src="login.js"></script>
 <script src="shared.js"></script>
+<script src="forgotpass.js"></script>
+<script src="modlist.js"></script>
 
 </html>

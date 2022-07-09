@@ -13,6 +13,7 @@ import Input from "./Modules/Util/Input.js"
 import Text from "./Modules/Util/TextE.js"
 const event = new Event('accountClick');
 const event2 = new Event('sharedClicked');
+const event3 = new Event('modsClick');
 
 let menuButtonList = [];
 let menuBarButtonList = [];
@@ -50,6 +51,34 @@ let boardPos = new Point(0, 0);
 let middleMouseHeld = false;
 let startMMouseHeld = new Point(0, 0);
 
+// https://www.geeksforgeeks.org/how-to-differentiate-mouse-click-and-drag-event-using-javascript/#:~:text=The%20basic%20difference%20between%20a,for%20both%20click%20and%20drag.
+let drag = false;
+document.addEventListener(
+    'mousedown', (e) => {
+      if (e.button == 2){
+        drag = false;
+        console.log("Down")
+      }
+
+    });
+
+document.addEventListener(
+    'mousemove', (e) => {
+
+      if (e.buttons == 2) {
+        drag = true;
+        console.log(e.buttons)
+      }
+
+    });
+
+document.addEventListener(
+    'mouseup', () => {
+        drag = false;
+
+      });
+        
+
 // On quit, save
 function enableStopSave() {
   window.addEventListener("beforeunload", function (e) {
@@ -65,7 +94,10 @@ function disableStopSave() {
   window.onbeforeunload = null;
 }
 
-
+// https://stackoverflow.com/questions/8782005/prevent-window-from-dragging-in-ios5-mobile-browser
+document.body.addEventListener('touchmove', function (ev) { 
+  ev.preventDefault();
+});
 
 
 export default blockBlockList;
@@ -112,6 +144,33 @@ if (window.location.href.includes("?")) {
 
     });
   })
+}
+
+
+// Mod loading
+let mods = localStorage.getItem("mods");
+mods = JSON.parse(mods);
+if (mods == null) {
+    localStorage.setItem("mods", JSON.stringify({modlist: []}))
+    mods = localStorage.getItem("mods");
+    mods = JSON.parse(mods);
+}
+let modList = mods.modlist;
+for (let mod of modList) {
+  let modDiv = document.createElement("div");
+  modDiv.id = mod.name;
+  document.getElementById("mods-cont").appendChild(modDiv)
+
+  const runCode = mod.content
+
+  try {
+    eval(runCode);
+    console.log("Loaded mod " + mod.name)
+  } 
+  catch (e) {
+    console.errorr("Could not load mod " + mod.name)
+  }
+
 }
 
 
@@ -241,6 +300,10 @@ function setup() {
       buttonList.push(new Button(new Point(5 + 60, 60 + 40), 190, 50, () => {
         blockBlockList.splice(0, blockBlockList.length)
         clearContext();
+        id = undefined;
+        name = "Unnamed board"
+        title.inputElement.value = name;
+        window.history.replaceState({}, 'idiotscript', '/')
       }, "Clear board"))
       buttonList.push(new Button(new Point(5 + 60, 60 + 95), 190, 50, () => {
         blockBlockList.splice(0, blockBlockList.length)
@@ -334,7 +397,18 @@ function setup() {
     menuBarButtonList.push(new Button(new Point(window.innerWidth - 90, 0), 90, 40, () => {
       document.body.dispatchEvent(event);
     }, ""));
-
+    menuBarButtonList.push(new Button(new Point(320, 0), 50, 40, () => {
+      contextHeight = 115
+      buttonList = new Array()
+      contextActive = true;
+      contextPoint = new Point(330, 40);
+      buttonList.push(new Button(new Point(330 + 5, 5 + 40), 190, 50, () => {
+        document.body.dispatchEvent(event3);
+      }, "Mod List"))
+      buttonList.push(new Button(new Point(330 + 5, 100), 190, 50, () => {
+        ConsoleManager.addToConsole("WIP feature")
+      }, "Remove All Mods"))
+    }, ""));
     draw();
     const resize = () => {
       canvas.width = (window.innerWidth);
@@ -481,7 +555,10 @@ function setup() {
 
 
     draw();
-    document.getElementById('main').addEventListener('mousedown', (e) => {
+    document.getElementById('main').addEventListener('mousedown', (e) => {mouseDown(e)})
+    document.getElementById('main').addEventListener('touchstart', (e) => {mouseDown(e)})
+
+    function mouseDown(e){
 
       for (let button of menuButtonList) {
         if (new Point(e.clientX, e.clientY).inSquare(button.position, button.width, button.height) && !contextActive) {
@@ -498,7 +575,89 @@ function setup() {
         }
       }
 
+      
+
+      if (new Point(e.clientX, e.clientY).inSquare(contextPoint, contextWidth, contextHeight)) {
+        for (let button of buttonList) {
+          if (new Point(e.clientX , e.clientY).inSquare(button.position, button.width, button.height)) {
+            button.onClick();
+            return;
+          }
+        }
+
+      }
+
+      if (contextActive) {
+        clearContext();
+        return;
+      }
+
+      if (e.button == 1 ) {
+        middleMouseHeld = true;
+
+        startMMouseHeld = new Point(e.clientX / scale, e.clientY / scale);
+
+        // xoff = e.clientX
+        // yoff = e.clientY
+        return;
+      }
       if (e.button == 2) {
+        middleMouseHeld = true;
+
+        startMMouseHeld = new Point(e.clientX / scale, e.clientY / scale);
+      }
+
+
+
+      clearContext();
+      e.preventDefault();
+      if (e.button != 2){
+        mouseHeld = true;
+        startSelectionPoint = new Point(e.clientX , e.clientY);
+        selectedBlockBlocks.splice(0, selectedBlockBlocks.length);
+      }
+      for (let blockBlock of blockBlockList) {
+      
+        // Check if its the WHOLE BOI
+        if (blockBlock.blockList[0] != undefined)
+        
+        if (new Point((e.clientX / scale) - xoff , (e.clientY / scale) - yoff ).inSquare(blockBlock.blockList[0].position, 80 , 80 )) {
+          heldBlockBlock = blockBlock;
+        }
+
+        // Otherwise break it up and create a new block
+        for (let i = 0; i < blockBlock.blockList.length; i++) {
+          let block = blockBlock.blockList[i];
+          if (new Point((e.clientX / scale) - xoff , (e.clientY / scale) - yoff ).inSquare(block.position, 80 , 80 )) {
+            let newBlockBlock = new BlockBlock.BlockBlock(new Array());
+            for (let j = i; j < blockBlock.blockList.length; j++) {
+              newBlockBlock.blockList.push(blockBlock.blockList[j]);
+            }
+            blockBlock.blockList.splice(i, blockBlock.blockList.length - i);
+            blockBlockList.push(newBlockBlock);
+            heldBlockBlock = newBlockBlock;
+            return;
+          }
+
+        }
+      }
+      draw();
+
+
+
+    }
+    
+    document.getElementById('main').addEventListener('mouseup', (e) => {mouseUp(e)})
+    document.getElementById('main').addEventListener('touchend', (e) => {mouseUp(e)})
+    
+    function mouseUp (e){
+      mouseHeld = false;
+      middleMouseHeld = false;
+
+      boardPos = new Point(xoff, yoff)
+
+      if (e.button == 2) {
+        if (!drag) {
         clearContext();
         contextActive = true;
 
@@ -679,7 +838,11 @@ function setup() {
 
           let button = new Button(new Point(e.clientX + 5, e.clientY + 5), 190, 45, () => {
             blockBlockList.splice(0, blockBlockList.length)
-
+            clearContext();
+            id = undefined;
+            name = "Unnamed board"
+            title.inputElement.value = name;
+            window.history.replaceState({}, 'idiotscript', '/')
           }, "Clear Board");
           buttonList.push(button);
           button = new Button(new Point(e.clientX + 5, e.clientY + 55), 190, 45, () => {
@@ -714,77 +877,13 @@ function setup() {
         contextActive = true;
         contextPoint = new Point(e.clientX , e.clientY);
 
+        }
+        console.log("WAS HERE")
         draw();
         return;
       }
 
-      if (new Point(e.clientX, e.clientY).inSquare(contextPoint, contextWidth, contextHeight)) {
-        for (let button of buttonList) {
-          if (new Point(e.clientX , e.clientY).inSquare(button.position, button.width, button.height)) {
-            button.onClick();
-            return;
-          }
-        }
 
-      }
-
-      if (contextActive) {
-        clearContext();
-        return;
-      }
-
-      if (e.button == 1) {
-        middleMouseHeld = true;
-
-        startMMouseHeld = new Point(e.clientX / scale, e.clientY / scale);
-
-        // xoff = e.clientX
-        // yoff = e.clientY
-        return;
-      }
-
-
-
-      clearContext();
-      e.preventDefault();
-      mouseHeld = true;
-      for (let blockBlock of blockBlockList) {
-      
-        // Check if its the WHOLE BOI
-        if (blockBlock.blockList[0] != undefined)
-        
-        if (new Point((e.clientX / scale) - xoff , (e.clientY / scale) - yoff ).inSquare(blockBlock.blockList[0].position, 80 , 80 )) {
-          heldBlockBlock = blockBlock;
-        }
-
-        // Otherwise break it up and create a new block
-        for (let i = 0; i < blockBlock.blockList.length; i++) {
-          let block = blockBlock.blockList[i];
-          if (new Point((e.clientX / scale) - xoff , (e.clientY / scale) - yoff ).inSquare(block.position, 80 , 80 )) {
-            let newBlockBlock = new BlockBlock.BlockBlock(new Array());
-            for (let j = i; j < blockBlock.blockList.length; j++) {
-              newBlockBlock.blockList.push(blockBlock.blockList[j]);
-            }
-            blockBlock.blockList.splice(i, blockBlock.blockList.length - i);
-            blockBlockList.push(newBlockBlock);
-            heldBlockBlock = newBlockBlock;
-            return;
-          }
-
-        }
-      }
-      draw();
-
-      startSelectionPoint = new Point(e.clientX , e.clientY);
-      selectedBlockBlocks.splice(0, selectedBlockBlocks.length);
-
-    }, false)
-    
-    document.getElementById('main').addEventListener('mouseup', (e) => {
-      mouseHeld = false;
-      middleMouseHeld = false;
-
-      boardPos = new Point(xoff, yoff)
 
       newSelectionPoint = new Point(-1, -1);
       startSelectionPoint = new Point(-1, -1);
@@ -813,10 +912,16 @@ function setup() {
       }
       orderBlocks();
       heldBlockBlock = undefined;
-    }, false)
+
+
+ 
+    }
     
     
-    document.getElementById('main').addEventListener('mousemove', (e) => {
+    document.getElementById('main').addEventListener('mousemove', (e) => {mouseMove(e)})
+    document.getElementById('main').addEventListener('touchmove', (e) => {mouseMove(e)})
+
+    function mouseMove (e){
 
       let hovering = false;
       for (let blockBlock of blockBlockList) {
@@ -832,7 +937,7 @@ function setup() {
         document.getElementById("main").style.cursor = ""
       }
 
-      if (middleMouseHeld) {
+      if (middleMouseHeld || drag) {
         xoff = -(startMMouseHeld.x - (e.clientX / scale)) + boardPos.x;
         yoff = -(startMMouseHeld.y - (e.clientY / scale)) + boardPos.y;
       }
@@ -864,7 +969,7 @@ function setup() {
         }
       }
 
-    }, false)
+    }
     clearEmptyBlockBlocks();
 
 
@@ -911,6 +1016,7 @@ function drawMenuBar(ctx) {
   ctx.fillText("Run", 180 - 50, 25)
   ctx.fillText("Settings", 230 - 50, 25)
   ctx.fillText("Shared", 260, 25)
+  ctx.fillText("Mods", 330, 25)
   ctx.fillText((!cred.username) ?"Account" : cred.username, window.innerWidth - 80, 25)
 }
 
@@ -1475,6 +1581,18 @@ function clearContext () {
 }
 
 document.getElementById("varInput").addEventListener('change', function() {
+  loadFile(this.files[0]);
+})
+
+document.body.addEventListener('drop', (e) => {
+  e.preventDefault()
+  if (e.dataTransfer.items) {
+    let file = e.dataTransfer.items[0].getAsFile();
+    loadFile(file);
+  }
+})
+
+function loadFile(file) {
   variableinit();
   var fileReader = new FileReader();
   fileReader.onload = function() {
@@ -1487,7 +1605,11 @@ document.getElementById("varInput").addEventListener('change', function() {
     variableinit();
     orderBlocks();
   }
-  fileReader.readAsText(this.files[0]);
+  fileReader.readAsText(file);
+}
+
+document.body.addEventListener('dragover', (e) => {
+  e.preventDefault();
 })
 
 function getCookie(cname) {

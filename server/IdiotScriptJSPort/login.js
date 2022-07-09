@@ -54,7 +54,7 @@ function onSignIn() {
             
                 });
                 if (document.getElementById("rememberM").checked) {
-                    document.cookie = "auth" + "=" + data.authtoken + ";";
+                    document.cookie = "auth" + "=" + data.authtoken + "; expires=Tue, 19 Jan 2038 04:14:07 GMT";
                 }
                 document.body.dispatchEvent(signUpEvent)
             }) 
@@ -66,4 +66,8 @@ document.getElementById("overlay").addEventListener('click', (e) => {
     document.getElementById("shared").style.display = "none"
     document.getElementById("signupin").style.display = "none"
     document.getElementById("overlay").style.display = "none"
+    document.getElementById("forgotpass").style.display = "none"
+    document.getElementById("modlist").style.display = "none"
+    document.getElementById("signupin").style.width = null;
+    document.getElementById("signin").style.display = "block"
 })

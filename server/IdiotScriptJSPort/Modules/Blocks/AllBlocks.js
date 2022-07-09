@@ -360,11 +360,11 @@ export default class allBlocks {
 
         new Block.Block((block, ctx, speed) => {
             let oldCol = allBlocks.windctx.fillStyle;
-            allBlocks.windctx.fillStyle = 'rgb(255, 255 ,255)'
+            allBlocks.windctx.fillStyle = block.arguments[0]
             allBlocks.windctx.fillRect(0, 0, 500, 500)
             allBlocks.windctx.fillStyle = oldCol
             
-        }, "draw", new Point(290, 50), "Clear", []),
+        }, "draw", new Point(290, 50), "Clear", [true]),
 
         new Block.Block((block, ctx, speed) => {
             allBlocks.windctx.fillStyle = block.arguments[0]

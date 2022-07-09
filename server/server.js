@@ -11,6 +11,7 @@ const crypto = require("crypto");
 const { allowedNodeEnvironmentFlags } = require("process");
 const { default: rateLimit } = require("express-rate-limit");
 const { default: fetch } = require('node-fetch')
+// const apiDest = "http://localhost:85"
 const apiDest = "https://brohouse.dev"
 
 let limiter = rateLimit({
@@ -171,6 +172,16 @@ app.post('/api/board', async (req, res) => {
         res.status(403).send("Invalid token");
     }
 
+})
+
+app.post('/api/resetpass', async (req, res) => {
+    console.log(req.body)
+    const response = await fetch(apiDest + "/api/resetpass", {  
+        method: 'POST',
+        body: req.body
+    })
+    const data = await response.text();
+    res.status(response.status).send(data);
 })
 
 app.post('/api/auth', async (req, res) => {
