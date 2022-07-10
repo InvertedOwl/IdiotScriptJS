@@ -147,31 +147,7 @@ if (window.location.href.includes("?")) {
 }
 
 
-// Mod loading
-let mods = localStorage.getItem("mods");
-mods = JSON.parse(mods);
-if (mods == null) {
-    localStorage.setItem("mods", JSON.stringify({modlist: []}))
-    mods = localStorage.getItem("mods");
-    mods = JSON.parse(mods);
-}
-let modList = mods.modlist;
-for (let mod of modList) {
-  let modDiv = document.createElement("div");
-  modDiv.id = mod.name;
-  document.getElementById("mods-cont").appendChild(modDiv)
 
-  const runCode = mod.content
-
-  try {
-    eval(runCode);
-    console.log("Loaded mod " + mod.name)
-  } 
-  catch (e) {
-    console.errorr("Could not load mod " + mod.name)
-  }
-
-}
 
 
 setup();
@@ -971,7 +947,27 @@ function setup() {
 
     }
     clearEmptyBlockBlocks();
-
+    document.body.addEventListener("reloadMenuButtons", () => {
+      menuButtonList.splice(0, menuButtonList.length);
+      let xOffset = 0;
+      for (let block of allBlocks.allBlocks) {
+        menuButtonList.push(new Button(new Point(10 + xOffset, 50), 80 , 80 , () => {
+          if (block.type == "comment"){
+            block.arguments = ["Comment"]
+          }
+          heldBlockBlock = new BlockBlock.BlockBlock([cloneBlock(block)]);
+          blockBlockList.push(heldBlockBlock);
+          mouseHeld = true;
+          enableStopSave();
+          //("TEST")
+          if (block.name == "On Draw Button" || block.name  == "On Draw Mouse"){
+            variableinit();
+          }
+    
+        }, "TEST"))
+        xOffset += 90;
+      }
+    })
 
 
     setInterval(draw, 16);
@@ -1626,4 +1622,13 @@ function getCookie(cname) {
     }
   }
   return "";
+}
+
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
 }

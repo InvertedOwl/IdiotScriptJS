@@ -71,7 +71,6 @@
     <title>IS JS</title>
 </head>
 <body style="margin: 0;">
-    <div id="mods-cont"></div>
 
     <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
@@ -120,11 +119,15 @@
             </div>
         </div>
         <div class="window" style="display: none; width: 600px;" id="modlist">
-            <div id="modcontainer" style="height: 400px; overflow-y: scroll; width: 560px">
+            <div id="modcontainer" style="height: 344px; overflow-y: scroll; width: 560px">
                 <div id="mods" style="margin-left: 30px; margin-top: 20px;">
 
                 </div>
             </div>
+            <input type="file" style="visibility: hidden;" id="mod-input" accept=".js">
+            <label for="mod-input" style="width: 150px; height: 50px; background-color: rgb(14, 165, 14); border-radius: 20px; left: 50%; transform: translate(-50%, 0%); position: absolute; font-weight: 700; font-size: 45;">
+                <div style="bottom: -4px; position: relative; left: 50%; transform: translate(-50%, 0%); position: absolute;">+</div>
+            </button>
 
         </div>
 
@@ -146,11 +149,14 @@
         <input type="text" placeholder="Value" style="font-family: Nunito; position: absolute; top: -200; background-color: rgb(60, 60, 60); left: -200; border-radius: 50px; text-decoration: none; width: 180px; height: 25px; border: none; outline: none; color: rgb(150, 150, 150);">
 
     </div>
+    <div id="mods-cont"></div>
+
 
 </body>
 <script src="login.js"></script>
 <script src="shared.js"></script>
 <script src="forgotpass.js"></script>
 <script src="modlist.js"></script>
+<script src="modloader.js"></script>
 
 </html>
